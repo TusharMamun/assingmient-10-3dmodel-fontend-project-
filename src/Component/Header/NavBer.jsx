@@ -7,8 +7,13 @@ import img from '/logo.png';
 import LoddingSpenner from '../LoddingSpenner';
 import { AuthContext } from '../../Auth/Authcontext';
 
+
 const NavBer = () => {
-  const { user, logOut, loading } = use(AuthContext)
+const{ user, logOut, loading} =use(AuthContext)
+  if (loading) {
+    return <LoddingSpenner/>;
+  }
+console.log(user)
 
   const handleLogout = () => {
     logOut()
@@ -31,8 +36,7 @@ const NavBer = () => {
       <NavLink to='/' className="text-xs font-normal md:text-xl md:font-semibold ">Home</NavLink>
       <NavLink to='/allmodel' className="text-xs md:text-xl md:font-semibold ">All Model</NavLink>
       <NavLink to='/addmodel' className="text-xs font-normal md:text-xl md:font-semibold ">Add Model </NavLink>
-      <NavLink to='/mypurchage' className="text-xs font-normal md:text-xl md:font-semibold ">My Purchases</NavLink>
-      <NavLink to='/myAddingmodel' className="text-xs font-normal md:text-xl md:font-semibold ">MY ADDING MODEL</NavLink>
+
     </>
   );
 
@@ -154,7 +158,7 @@ const NavBer = () => {
                   </li>
                   <li>
                     <Link
-                      to="/addmodel"
+                      to="/myAddingmodel"
                       className="flex items-center justify-start gap-2 font-medium hover:text-blue-600"
                     >
                       <i className="fa-solid fa-cube"></i> My Models
@@ -179,4 +183,4 @@ const NavBer = () => {
   );
 };
 
-export default NavBer;
+export default NavBer

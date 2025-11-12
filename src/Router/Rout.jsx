@@ -4,7 +4,7 @@ import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layout/MainLayout";
 import AllModel from "../Pages/ALLMODELPage/AllModel";
 import AddModel from "../Pages/AddModelPage/AddModel";
-import MYModel from "../Pages/MYModelPage/MyPerchageModel";
+
 import Home from "../Pages/HomePage/Home";
 import Loging from "../Pages/AuthenticationPage/Loging";
 import Regestration from "../Pages/AuthenticationPage/Regestration";
@@ -23,12 +23,12 @@ export  const router = createBrowserRouter([
             {
 index:true,
 Component:Home,
-loader:()=>fetch("http://localhost:3000/latestModels")
+
 },
             {
     path:'/allmodel',
 element:<PrivateRouter><AllModel></AllModel></PrivateRouter>,
-loader:()=>fetch('http://localhost:3000/models')
+
 },
 {
     path:'/addmodel',
@@ -46,7 +46,7 @@ element:<PrivateRouter><MyAddition></MyAddition></PrivateRouter>
 {
 path:'/updataeModel/:id',
 element:<PrivateRouter><UpdatetForm></UpdatetForm></PrivateRouter>,
-loader:({params})=>fetch(`http://localhost:3000/models/${params.id}`)
+
 },
 
 {
@@ -61,7 +61,7 @@ loader:({params})=>fetch(`http://localhost:3000/models/${params.id}`)
 
     path:'/modelDetails/:id',
 element:<PrivateRouter><ViweDetails></ViweDetails></PrivateRouter>,
-loader:({params})=>fetch(`http://localhost:3000/models/${params.id}`)
+
 }
         ]
     },

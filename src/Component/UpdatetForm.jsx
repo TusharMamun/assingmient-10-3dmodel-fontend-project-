@@ -1,43 +1,109 @@
-import React, { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router";
+import React, { useState, useEffect, use } from "react";
+import { useNavigate, useParams } from "react-router";
+
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { AuthContext } from "../Auth/Authcontext";
 
 const UpdateForm = () => {
-  const InfoUpdate = useLoaderData();
+  const { user } = use(AuthContext)
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  // Initialize form with existing data
+  const [detailsData, setDetailsData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
-    name: InfoUpdate.name || "",
-    framework: InfoUpdate.framework || "",
-    useCase: InfoUpdate.useCase || "",
-    dataset: InfoUpdate.dataset || "",
-    description: InfoUpdate.description || "",
-    image: InfoUpdate.image || "",
+    name: "",
+    framework: "",
+    useCase: "",
+    dataset: "",
+    description: "",
+    image: "",
   });
 
-  // Handle form field change
+  // Fetch model details
+  useEffect(() => {
+    if (!id) return;
+    setLoading(true);
+
+    fetch(`http://localhost:3000/models/${id}`, {
+      headers: {
+        authorization: `Bearer ${user?.accessToken}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch model details");
+        return res.json();
+      })
+      .then((data) => {
+        setDetailsData(data);
+        console.log(data)
+        setFormData({
+          name: data.name || "",
+          framework: data.framework || "",
+          useCase: data.useCase || "",
+          dataset: data.dataset || "",
+          description: data.description || "",
+          image: data.image || "",
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Failed to load model details!");
+        setLoading(false);
+      });
+  }, [id, user]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Submit update request
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    fetch(`http://localhost:3000/models/${InfoUpdate._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("✅ Updated Successfully:", data);
-        alert("Model updated successfully!");
-   navigate(`/modelDetails/${InfoUpdate._id}`);
-      })
-      .catch((error) => console.error("❌ Error updating model:", error));
+    Swal.fire({
+      title: "Update Model?",
+      text: "Are you sure you want to update this model?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, update it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:3000/models/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${user?.accessToken}`,
+          },
+          body: JSON.stringify(formData),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success || data.modifiedCount >= 0) {
+              toast.success("Model updated successfully!");
+       navigate(`/modelDetails/${id}`);
+            } else {
+              toast.error("Failed to update model!");
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            toast.error("Server error while updating!");
+          });
+      }
+    });
   };
+    if (!detailsData) {
+    return <div className="text-center py-20 text-red-600">No data found.</div>;
+  }
+  if (loading) {
+    return <div className="text-center py-20 text-lg">Loading...</div>;
+  }
+
+
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded-2xl shadow-md">
