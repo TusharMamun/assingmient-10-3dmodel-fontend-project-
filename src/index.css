@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Global font */
+* {
+  font-family: "Roboto", sans-serif;
+}
+
+
+.activeMenu a.active {
+  border-bottom: 2px solid red;
+}
+.glass-nav {
+  background: rgba(134, 179, 179, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+/* Custom button */
+.primaryBtn {
+  @apply px-3 md:px-6 py-2 text-center text-white border border-violet-600 rounded 
+         active:text-violet-500 hover:bg-transparent hover:text-violet-600 
+         focus:outline-none focus:ring focus:ring-violet-500 focus:ring-offset-2;
+}
