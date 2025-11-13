@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Auth/Authcontext";
 import LoddingSpenner from "../../Component/LoddingSpenner";
 
@@ -13,7 +13,7 @@ const MyPerchageModel = () => {
 
     setLoading(true);
 
-    fetch(`http://localhost:3000/mypurchase?email=${user.email}`, {
+    fetch(`https://3daimodelserverbackend.vercel.app/mypurchase?email=${user.email}`, {
       headers: {
         "Content-Type": "application/json",
         // if your API requires auth, uncomment the next line:

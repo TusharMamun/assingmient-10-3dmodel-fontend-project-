@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import { use, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { toast } from "react-toastify";
@@ -26,7 +26,7 @@ const UpdateForm = () => {
     if (!id) return;
     setLoading(true);
 
-    fetch(`http://localhost:3000/models/${id}`, {
+    fetch(`https://3daimodelserverbackend.vercel.app/models/${id}`, {
       headers: {
         authorization: `Bearer ${user?.accessToken}`,
       },
@@ -50,7 +50,7 @@ const UpdateForm = () => {
       })
       .catch((error) => {
         console.error(error);
-        toast.error("Failed to load model details!");
+    
         setLoading(false);
       });
   }, [id, user]);
@@ -72,7 +72,7 @@ const UpdateForm = () => {
       confirmButtonText: "Yes, update it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/models/${id}`, {
+        fetch(`https://3daimodelserverbackend.vercel.app/models/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

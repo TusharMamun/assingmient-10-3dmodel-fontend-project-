@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+
 import { AuthContext } from '../../Auth/Authcontext';
-import { toast } from 'react-toastify';
-import LoddingSpenner from '../../Component/LoddingSpenner';
 import Card from '../../Component/Card';
+import LoddingSpenner from '../../Component/LoddingSpenner';
 
 const AllModel = () => {
   const { user, loading: authLoading } = useContext(AuthContext);
@@ -20,7 +21,7 @@ const AllModel = () => {
       return;
     }
 
-    fetch(`http://localhost:3000/models`, {
+    fetch(`https://3daimodelserverbackend.vercel.app/models`, {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
@@ -37,7 +38,8 @@ const AllModel = () => {
       })
       .catch((err) => {
         console.error("Error fetching models:", err);
-        toast.error("Failed to load model details!");
+
+        
       });
   }, [user]);
 
@@ -46,7 +48,7 @@ const AllModel = () => {
     e.preventDefault();
     const search_text = e.target.search.value;
     setSearchLoading(true);
-    fetch(`http://localhost:3000/search?search=${search_text}`)
+    fetch(`https://3daimodelserverbackend.vercel.app/search?search=${search_text}`)
       .then((res) => res.json())
       .then((data) => setData(data))
       .finally(() => setSearchLoading(false));

@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import { AuthContext } from "../../Auth/Authcontext";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../Auth/Authcontext";
 import LoddingSpenner from "../../Component/LoddingSpenner";
 
 const ViweDetails = () => {
@@ -18,17 +18,17 @@ const ViweDetails = () => {
     if (!id || !user?.accessToken) return;
     setLoading(true);
 
-    fetch(`http://localhost:3000/models/${id}`, {
+    fetch(`https://3daimodelserverbackend.vercel.app/models/${id}`, {
       headers: {
         authorization: `Bearer ${user.accessToken}`,
       },
     })
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch model details");
+        if (!res.ok) throw new Error
         return res.json();
       })
       .then((data) => setDetailsData(data))
-      .catch(() => toast.error("Failed to load model details!"))
+
       .finally(() => setLoading(false));
   }, [id, user]);
 
@@ -59,7 +59,7 @@ const ViweDetails = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:3000/models/${_id}`, {
+        fetch(`https://3daimodelserverbackend.vercel.app/models/${_id}`, {
           method: "DELETE",
           headers: {
             authorization: `Bearer ${user.accessToken}`,
@@ -97,7 +97,7 @@ createdAt:new Date()
 
 
     }
-fetch(`http://localhost:3000/purchase/${detailsData._id}`, {
+fetch(`https://3daimodelserverbackend.vercel.app/purchase/${detailsData._id}`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify(finalpuchaseWithoutId ),

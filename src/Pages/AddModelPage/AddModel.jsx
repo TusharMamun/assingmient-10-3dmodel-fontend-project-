@@ -1,7 +1,7 @@
-import React, { use, useState } from 'react';
-import { AuthContext } from '../../Auth/Authcontext';
+import { use, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import {  useNavigate } from 'react-router';
+import { AuthContext } from '../../Auth/Authcontext';
 
 
 const AddModelForm = () => {
@@ -32,7 +32,7 @@ const AddModelForm = () => {
   // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/models', {
+    fetch('https://3daimodelserverbackend.vercel.app/models', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),

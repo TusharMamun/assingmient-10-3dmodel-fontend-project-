@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { AuthContext } from "../../Auth/Authcontext";
 import LoddingSpenner from "../../Component/LoddingSpenner";
-import { toast } from "react-toastify";
 
 const MyAddition = () => {
   const { user } = useContext(AuthContext);
@@ -12,7 +12,7 @@ const MyAddition = () => {
     if (!user?.email) return;
 
     setLoading(true);
-    fetch(`http://localhost:3000/my-add-model?email=${user.email}`, {
+    fetch(`https://3daimodelserverbackend.vercel.app/my-add-model?email=${user.email}`, {
       headers: {
         authorization: `Bearer ${user?.accessToken}`,
       },

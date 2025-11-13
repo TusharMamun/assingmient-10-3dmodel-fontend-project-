@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Auth/Authcontext";
+import AboutSection from "../../Component/AboutSection ";
+import Card from "../../Component/Card";
 import LoddingSpenner from "../../Component/LoddingSpenner";
 import HomeSlider from "./HomeSlider";
-import Card from "../../Component/Card";
-import AboutSection from "../../Component/AboutSection ";
 
 
 
@@ -18,7 +18,7 @@ const Home = () => {
  
 
 
-    fetch("http://localhost:3000/latestModels", {
+    fetch("https://3daimodelserverbackend.vercel.app/latestModels", {
     
     })
       .then(async (res) => {
@@ -40,7 +40,8 @@ const Home = () => {
       })
       .catch((err) => {
         console.error("❌ Fetch Error:", err);
-        toast.error("Failed to load model details!");
+        
+        
         setIsLoading(false);
       });
   }, [user]);
