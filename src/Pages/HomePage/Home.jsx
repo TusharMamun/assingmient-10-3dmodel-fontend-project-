@@ -4,6 +4,8 @@ import { AuthContext } from "../../Auth/Authcontext";
 import LoddingSpenner from "../../Component/LoddingSpenner";
 import HomeSlider from "./HomeSlider";
 import Card from "../../Component/Card";
+import AboutSection from "../../Component/AboutSection ";
+
 
 
 const Home = () => {
@@ -51,7 +53,7 @@ const Home = () => {
   return (
     <div>
       <HomeSlider />
-      <div className="w-11/12 mx-auto border-rose-500">
+      <div className="w-11/12 mx-auto border-rose-500 mb-10">
         <div className="my-8">
           <h1
             className="text-4xl md:text-5xl font-extrabold text-gradient bg-clip-text text-transparent 
@@ -74,8 +76,8 @@ const Home = () => {
           )}
         </div>
       </div>
-<div>
-  {/* <BestRegerud></BestRegerud> */}
+<div className="mt-10">
+<AboutSection></AboutSection>
 </div>
 
 

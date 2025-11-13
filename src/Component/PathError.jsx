@@ -3,6 +3,7 @@ import React from 'react'
 import { NavLink } from 'react-router'
 import EroorImg from '/error-404.png'
 import NavBer from './Header/NavBer'
+import Footer from './Footer'
 
 
 
@@ -29,7 +30,7 @@ const PathError = () => {
         
       </div>
     </div>
-    {/* <Footer></Footer> */}
+<Footer></Footer>
     </>
   )
 }
