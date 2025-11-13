@@ -3,9 +3,11 @@ import { Link, NavLink } from 'react-router';
 
 import { toast } from 'react-toastify';
 // import spinner
-import img from '/logo.png';
+import img from '/logo-2.5.png';
 import LoddingSpenner from '../LoddingSpenner';
 import { AuthContext } from '../../Auth/Authcontext';
+import ThimChange from './ThimChange';
+
 
 
 const NavBer = () => {
@@ -41,9 +43,9 @@ console.log(user)
   );
 
   return (
-    <div className="sticky top-0 w-full z-50 mb-8">
+    <div className="sticky top-0 w-full z-50 mb-8 ">
       <div className="navbar w-11/12 mx-auto mt-5 rounded-2xl px-8 py-4 flex justify-between items-center 
-                      bg-black/60 backdrop-blur-md border border-white/10 shadow-lg">
+                      bg-black/60 backdrop-blur-md border border-white/10 shadow-lg relative">
         {/* Navbar Start (Logo + Dropdown) */}
         <div className="navbar-start">
           <div className="dropdown">
@@ -75,7 +77,10 @@ console.log(user)
           </div>
 
           {/* Logo */}
-          <img src={img} alt="Logo" className="w-28 h-auto object-contain" />
+       <div className='flex '> 
+           <img src={img} alt="Logo" className="w-28 h-auto object-contain rounded-full" />
+  
+       </div>
         </div>
 
         {/* Navbar Center (Links) */}
@@ -87,9 +92,16 @@ console.log(user)
 
         {/* Navbar End (Profile/Login Buttons) */}
         <div className="navbar-end">
+
           <div className="flex md:flex-row gap-4 items-center">
+              <div className='mb-10'>
+             
+              </div>
             {/* Login / Sign In Buttons */}
-            <div className="flex gap-3">
+      <div>
+                 
+              <div className="flex gap-3">
+  
               {user ? (
                 <button
                   onClick={handleLogout}
@@ -114,6 +126,7 @@ console.log(user)
                 </>
               )}
             </div>
+      </div>
 
             {/* Profile Dropdown */}
             {user && (
@@ -176,9 +189,14 @@ console.log(user)
                 </ul>
               </div>
             )}
+            <div>
+         
+            </div>
           </div>
         </div>
+
       </div>
+                          <div className='absolute  top-2 right-30'><ThimChange></ThimChange></div>       
     </div>
   );
 };

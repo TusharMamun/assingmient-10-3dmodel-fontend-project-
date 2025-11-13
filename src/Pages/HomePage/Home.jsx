@@ -5,6 +5,7 @@ import LoddingSpenner from "../../Component/LoddingSpenner";
 import HomeSlider from "./HomeSlider";
 import Card from "../../Component/Card";
 
+
 const Home = () => {
   const { user, loading } = useContext(AuthContext);
 
@@ -12,16 +13,11 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // ✅ Only fetch when user and token are ready
-    if (!user?.accessToken) {
-      setIsLoading(false);
-      return;
-    }
+ 
+
 
     fetch("http://localhost:3000/latestModels", {
-      headers: {
-        authorization: `Bearer ${user.accessToken}`,
-      },
+    
     })
       .then(async (res) => {
         if (!res.ok) {
@@ -31,7 +27,7 @@ const Home = () => {
         return res.json();
       })
       .then((data) => {
-        // ✅ Ensure it’s an array
+   
         if (Array.isArray(data)) {
           setAllData(data);
         } else {
@@ -78,6 +74,14 @@ const Home = () => {
           )}
         </div>
       </div>
+<div>
+  {/* <BestRegerud></BestRegerud> */}
+</div>
+
+
+
+
+
     </div>
   );
 };

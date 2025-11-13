@@ -13,6 +13,7 @@ import MyPerchageModel from "../Pages/MYModelPage/MyPerchageModel";
 import MyAddition from "../Pages/MYAddingModel/MyAddition";
 import ViweDetails from "../Pages/ALLMODELPage/ViweDetails";
 import UpdatetForm from "../Component/UpdatetForm";
+import PathError from "../Component/PathError";
 
 
 export  const router = createBrowserRouter([
@@ -63,8 +64,13 @@ element:<PrivateRouter><UpdatetForm></UpdatetForm></PrivateRouter>,
 element:<PrivateRouter><ViweDetails></ViweDetails></PrivateRouter>,
 
 }
+
+
         ]
     },
-
+     {
+    path:'*',
+    Component:PathError
+  }
 
 ])

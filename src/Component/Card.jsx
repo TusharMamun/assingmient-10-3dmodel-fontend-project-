@@ -52,7 +52,7 @@ const Card = ({data}) => {
         <Link to={`/modelDetails/${data._id}`}>  <button className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-blue-600 transition duration-200">
             View Details
           </button></Link>
-          <span className="text-sm text-gray-500">Free</span>
+          <span className=" text-red-500 text-xl">BEST QUALITY</span>
         </div>
       </div>
     </div>

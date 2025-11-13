@@ -13,37 +13,27 @@ const ViweDetails = () => {
   const [detailsData, setDetailsData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Fetch model details with access token
   useEffect(() => {
-    if (!id) return;
+    if (!id || !user?.accessToken) return;
     setLoading(true);
 
     fetch(`http://localhost:3000/models/${id}`, {
       headers: {
-        authorization: `Bearer ${user?.accessToken}`,
+        authorization: `Bearer ${user.accessToken}`,
       },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch model details");
         return res.json();
       })
-      .then((data) => {
-        setDetailsData(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error("Failed to load model details!");
-        setLoading(false);
-      });
+      .then((data) => setDetailsData(data))
+      .catch(() => toast.error("Failed to load model details!"))
+      .finally(() => setLoading(false));
   }, [id, user]);
 
-  if (loading) {
-    return <LoddingSpenner></LoddingSpenner>;
-  }
-
-  if (!detailsData) {
-    return <div className="text-center py-20 text-red-600">No data found.</div>;
-  }
+  if (loading) return <LoddingSpenner />;
+  if (!detailsData) return <div className="text-center py-20 text-red-600">No data found.</div>;
 
   const {
     _id,
@@ -57,10 +47,11 @@ const ViweDetails = () => {
     createdBy,
   } = detailsData;
 
+  // ✅ Delete model (token included)
   const handleDelete = () => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "This model will be deleted permanently!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -71,7 +62,7 @@ const ViweDetails = () => {
         fetch(`http://localhost:3000/models/${_id}`, {
           method: "DELETE",
           headers: {
-            authorization: `Bearer ${user?.accessToken}`,
+            authorization: `Bearer ${user.accessToken}`,
           },
         })
           .then((res) => res.json())
@@ -80,85 +71,80 @@ const ViweDetails = () => {
             toast.success("Model deleted successfully!");
             navigate("/allmodel");
           })
-          .catch((err) => {
-            console.error(err);
-            toast.error("Failed to delete model!");
-          });
+          .catch(() => toast.error("Failed to delete model!"));
       }
     });
   };
-const handlePurchase = (detailsData) => {
-  Swal.fire({
-    title: "Confirm Purchase",
-    text: "Do you want to purchase this model?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, purchase it!",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch(`http://localhost:3000/purchase`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${user?.accessToken}`, // optional
-        },
-        body: JSON.stringify({ ...detailsData, createdBy: user.email }),
-      })
-        .then((res) => res.json())
-        .then(() => {
-          Swal.fire("Purchased!", "Your model has been purchased.", "success");
-          toast.success("Model purchased successfully!");
-        })
-        .catch((err) => {
-          console.error(err);
-          toast.error("Failed to purchase model!");
-        });
+
+  // ✅ Purchase model (token included)
+  const handlePurchase = () => {
+    const finalpuchaseWithoutId ={
+name:detailsData.name,
+    framework:detailsData.framework,
+    useCase:detailsData.useCase,
+    dataset:detailsData.dataset,
+    description:detailsData.description,
+    image:detailsData.image,
+    purchased:detailsData.purchased,
+    createdBy:detailsData.createdBy,
+ purchasedBy: user.email,
+createdAt:new Date()
+
+
+
+
+
+
+
     }
-  });
+fetch(`http://localhost:3000/purchase/${detailsData._id}`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(finalpuchaseWithoutId ),
+})
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Purchase response:", data);
+  toast.success(" Scucess fully purchas ")
+       navigate("/allmodel");
+    })
+    .catch((err) => {
+      console.error("Error during purchase:", err);
+      toast.error("Already purcesd")
+         navigate("/allmodel");
+    });
 };
-
-
-
-
-
 
   return (
     <div className="w-11/12 mx-auto mt-10">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
-          {/* Image Section */}
+          {/* Image */}
           <div className="md:w-1/2 p-4 flex justify-center items-center bg-gray-100">
             <img
-              src={
-                image ||
-                "https://i.ibb.co.com/JW1pxyfk/Black-Modern-Minimalist-Simple-Technology-Banner.png"
-              }
+              src={image || "https://i.ibb.co.com/JW1pxyfk/Black-Modern-Minimalist-Simple-Technology-Banner.png"}
               alt={name}
               className="w-full h-auto rounded-lg object-cover"
             />
           </div>
 
-          {/* Info Section */}
+          {/* Info */}
           <div className="md:w-1/2 p-6 flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">
-                  {name}
-                </h1>
+                <h1 className="text-3xl font-bold text-gray-800 mb-2">{name}</h1>
                 {user?.email === createdBy && (
                   <div className="mt-6 flex flex-col md:flex-row gap-3">
                     <Link
                       to={`/updataeModel/${_id}`}
-                      className="btn bg-yellow-400 hover:bg-yellow-500 text-black font-normal p-2 rounded-full transition duration-300"
+                      className="bg-yellow-400 hover:bg-yellow-500 text-black font-normal p-2 rounded-full transition duration-300"
                     >
                       Edit
                     </Link>
                     <button
                       onClick={handleDelete}
                       className="bg-red-500 hover:bg-red-600 text-white font-normal p-2 rounded-full transition duration-300"
-                    >
+                    >l
                       Delete
                     </button>
                   </div>
@@ -166,10 +152,7 @@ const handlePurchase = (detailsData) => {
               </div>
 
               <p className="text-sm text-gray-500 mb-4">
-                <span className="font-semibold text-gray-700">
-                  Framework:
-                </span>{" "}
-                {framework}
+                <span className="font-semibold text-gray-700">Framework:</span> {framework}
               </p>
               <p className="text-gray-700 mb-2">
                 <span className="font-semibold">Use Case:</span> {useCase}
@@ -178,14 +161,16 @@ const handlePurchase = (detailsData) => {
                 <span className="font-semibold">Dataset:</span> {dataset}
               </p>
               <p className="text-gray-700 mb-2">
-                <span className="font-semibold">Purchased:</span>{" "}
-                {purchased || 0} times
+                <span className="font-semibold">Purchased:</span> {purchased || 0} times
               </p>
               <p className="text-gray-600 mt-4">{description}</p>
             </div>
 
             <div className="mt-6 flex flex-col md:flex-row gap-3">
-              <button onClick={handlePurchase} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300">
+              <button
+                onClick={handlePurchase}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+              >
                 Buy Now
               </button>
             </div>
